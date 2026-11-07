@@ -1,0 +1,139 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>President's Data Bundles Ghana</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#f4f6fa;color:#17233c}
+header{background:#101d38;color:white;padding:20px}
+nav{max-width:1000px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.logo{font-weight:bold;font-size:17px}
+.logo span{color:#e9b949}
+.hero{background:#101d38;color:white;padding:45px 20px;text-align:center}
+.hero h1{font-size:30px;margin-bottom:12px}
+.hero p{color:#cbd5e1}
+main{max-width:750px;margin:25px auto;padding:0 15px}
+.panel{background:white;padding:23px;border-radius:15px;margin-bottom:20px;box-shadow:0 3px 15px #0000000c}
+h2{font-size:20px;margin-bottom:18px}
+label{display:block;font-weight:bold;margin:14px 0 7px}
+input,select{width:100%;padding:14px;border:1px solid #d6dce5;border-radius:9px;font-size:16px;background:white}
+.networks{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.network{padding:15px 5px;border:2px solid #e0e5ed;background:white;border-radius:10px;font-weight:bold;cursor:pointer}
+.network.active{border-color:#d5a52d;background:#fff9e9}
+button{cursor:pointer}
+.buy{width:100%;padding:16px;border:0;border-radius:10px;background:#e9b949;color:#101d38;font-weight:bold;font-size:17px;margin-top:20px}
+.price{background:#f1f4f9;padding:15px;border-radius:10px;margin-top:15px;display:flex;justify-content:space-between;font-weight:bold}
+.note{font-size:12px;color:#657187;margin-top:12px;line-height:1.5}
+footer{text-align:center;padding:25px;background:#101d38;color:white;font-size:13px}
+</style>
+</head>
+<body>
+<header>
+<nav>
+<div class="logo">PRESIDENT'S <span>DATA BUNDLES</span></div>
+<div>🇬🇭 GHANA</div>
+</nav>
+</header>
+
+<section class="hero">
+<h1>Stay Connected. Pay Less.</h1>
+<p>Affordable data bundles and airtime across Ghana.</p>
+</section>
+
+<main>
+<section class="panel">
+<h2>Buy Data Bundles</h2>
+<p>Select your network:</p>
+<div class="networks">
+<button class="network active" onclick="network('MTN',this)">MTN</button>
+<button class="network" onclick="network('Telecel',this)">Telecel</button>
+<button class="network" onclick="network('AT',this)">AT</button>
+</div>
+
+<label for="phone">Recipient Phone Number</label>
+<input id="phone" type="tel" placeholder="e.g. 0241234567">
+
+<label for="service">Choose Service</label>
+<select id="service" onchange="updateOptions()">
+<option value="data">Data Bundles</option>
+<option value="airtime">Airtime</option>
+</select>
+
+<label for="plan">Select Bundle</label>
+<select id="plan" onchange="updatePrice()"></select>
+
+<div class="price">
+<span>Total Price</span>
+<span id="price">GH₵4.40</span>
+</div>
+
+<button class="buy" onclick="order()">Continue to Order</button>
+<p class="note">Prices shown are starter prices. Payment and delivery will be activated after backend and payment integration are configured.</p>
+</section>
+
+<section class="panel">
+<h2>Why Choose Us?</h2>
+<p>✓ Affordable prices</p><br>
+<p>✓ Simple ordering process</p><br>
+<p>✓ MTN, Telecel and AT</p><br>
+<p>✓ Customer support</p>
+</section>
+</main>
+
+<footer>
+<p>© 2026 President's Data Bundles Ghana</p>
+<p>Affordable Data. Reliable Service.</p>
+</footer>
+
+<script>
+let selectedNetwork="MTN";
+let prices={
+ MTN:{data:{"1 GB":4.40,"2 GB":8.80,"3 GB":13.20,"5 GB":22,"10 GB":44},airtime:[5,10,20,50,100]},
+ Telecel:{data:{"1 GB":6,"2 GB":12,"3 GB":18,"5 GB":30,"10 GB":60},airtime:[5,10,20,50,100]},
+ AT:{data:{"1 GB":5,"2 GB":10,"3 GB":15,"5 GB":25,"10 GB":50},airtime:[5,10,20,50,100]}
+};
+function network(n,btn){
+ selectedNetwork=n;
+ document.querySelectorAll('.network').forEach(b=>b.classList.remove('active'));
+ btn.classList.add('active');
+ updateOptions();
+}
+function updateOptions(){
+ let service=document.getElementById('service').value;
+ let plan=document.getElementById('plan');
+ plan.innerHTML='';
+ let items=service==='data'?prices[selectedNetwork].data:Object.fromEntries(prices[selectedNetwork].airtime.map(v=>[ 'GH₵'+v,v]));
+ Object.keys(items).forEach(k=>{
+ let option=document.createElement('option');
+ option.value=k;
+ option.textContent=service==='data'?k:k+' Airtime';
+ plan.appendChild(option);
+ });
+ updatePrice();
+}
+function updatePrice(){
+ let service=document.getElementById('service').value;
+ let choice=document.getElementById('plan').value;
+ let amount=service==='data'?prices[selectedNetwork].data[choice]:prices[selectedNetwork].airtime[Number(choice.replace('GH₵',''))/1] ;
+ if(service==='airtime') amount=Number(choice.replace('GH₵',''));
+ document.getElementById('price').textContent='GH₵'+Number(amount).toFixed(2);
+}
+function order(){
+ let phone=document.getElementById('phone').value.trim();
+ if(!/^0\d{9}$/.test(phone)){
+ alert('Please enter a valid 10-digit Ghana phone number.');
+ return;
+ }
+ let service=document.getElementById('service').value;
+ let plan=document.getElementById('plan').value;
+ let amount=document.getElementById('price').textContent;
+ alert('Order summary\\nNetwork: '+selectedNetwork+'\\nService: '+service+'\\nPackage: '+plan+'\\nPhone: '+phone+'\\nPrice: '+amount+'\\n\\nCheckout will be enabled after payment integration.');
+}
+updateOptions();
+</script>
+</body>
+</html>
