@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: presidents-data-bundles-ghana
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: DATABASE_SSL
+        value: "true"
+      - key: PAYSTACK_SECRET_KEY
+        sync: false
+      - key: ADMIN_TOKEN
+        sync: false
