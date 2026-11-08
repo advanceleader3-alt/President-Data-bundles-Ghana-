@@ -1,139 +1,136 @@
-
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>President's Data Bundles Ghana</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Arial,sans-serif;background:#f4f6fa;color:#17233c}
-header{background:#101d38;color:white;padding:20px}
-nav{max-width:1000px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:12px}
-.logo{font-weight:bold;font-size:17px}
-.logo span{color:#e9b949}
-.hero{background:#101d38;color:white;padding:45px 20px;text-align:center}
-.hero h1{font-size:30px;margin-bottom:12px}
-.hero p{color:#cbd5e1}
-main{max-width:750px;margin:25px auto;padding:0 15px}
-.panel{background:white;padding:23px;border-radius:15px;margin-bottom:20px;box-shadow:0 3px 15px #0000000c}
-h2{font-size:20px;margin-bottom:18px}
-label{display:block;font-weight:bold;margin:14px 0 7px}
-input,select{width:100%;padding:14px;border:1px solid #d6dce5;border-radius:9px;font-size:16px;background:white}
-.networks{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.network{padding:15px 5px;border:2px solid #e0e5ed;background:white;border-radius:10px;font-weight:bold;cursor:pointer}
-.network.active{border-color:#d5a52d;background:#fff9e9}
-button{cursor:pointer}
-.buy{width:100%;padding:16px;border:0;border-radius:10px;background:#e9b949;color:#101d38;font-weight:bold;font-size:17px;margin-top:20px}
-.price{background:#f1f4f9;padding:15px;border-radius:10px;margin-top:15px;display:flex;justify-content:space-between;font-weight:bold}
-.note{font-size:12px;color:#657187;margin-top:12px;line-height:1.5}
-footer{text-align:center;padding:25px;background:#101d38;color:white;font-size:13px}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#087443">
+  <title>President's Data Bundles Ghana</title>
+  <style>
+    :root{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:#15251d;background:#f5f8f5}
+    *{box-sizing:border-box}body{margin:0}header{background:#087443;color:white;padding:24px 16px}
+    .wrap{max-width:980px;margin:auto;padding:0 16px}h1{margin:0;font-size:clamp(1.6rem,5vw,2.4rem)}
+    header p{margin:8px 0 0;color:#e2f6e9}.notice{margin:18px 0;padding:12px 14px;background:#fff7df;border:1px solid #f0d68b;border-radius:10px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:20px 0}
+    .card{background:white;border:1px solid #e0e9e2;border-radius:14px;padding:18px;box-shadow:0 3px 12px #1231}
+    .network{font-size:.8rem;font-weight:700;color:#087443;text-transform:uppercase;letter-spacing:.06em}
+    .price{font-size:1.5rem;font-weight:800;margin:10px 0}.card button,button{border:0;border-radius:9px;padding:12px 15px;font-weight:700;cursor:pointer;background:#087443;color:white}
+    button:disabled{opacity:.6;cursor:wait}.panel{background:white;border:1px solid #e0e9e2;border-radius:14px;padding:20px;margin:20px 0}
+    label{display:block;font-weight:650;margin:12px 0 6px}input,select{width:100%;padding:12px;border:1px solid #b9c9bd;border-radius:8px;font:inherit}
+    .formgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+    .muted{color:#5c6c61;font-size:.92rem}.status{padding:12px;border-radius:9px;background:#edf6ef;margin:12px 0;display:none}
+    footer{padding:24px 0;color:#5c6c61;font-size:.88rem}a{color:#087443}
+  </style>
 </head>
 <body>
-<header>
-<nav>
-<div class="logo">PRESIDENT'S <span>DATA BUNDLES</span></div>
-<div>🇬🇭 GHANA</div>
-</nav>
-</header>
-
-<section class="hero">
-<h1>Stay Connected. Pay Less.</h1>
-<p>Affordable data bundles and airtime across Ghana.</p>
-</section>
-
-<main>
-<section class="panel">
-<h2>Buy Data Bundles</h2>
-<p>Select your network:</p>
-<div class="networks">
-<button class="network active" onclick="network('MTN',this)">MTN</button>
-<button class="network" onclick="network('Telecel',this)">Telecel</button>
-<button class="network" onclick="network('AT',this)">AT</button>
-</div>
-
-<label for="phone">Recipient Phone Number</label>
-<input id="phone" type="tel" placeholder="e.g. 0241234567">
-
-<label for="service">Choose Service</label>
-<select id="service" onchange="updateOptions()">
-<option value="data">Data Bundles</option>
-<option value="airtime">Airtime</option>
-</select>
-
-<label for="plan">Select Bundle</label>
-<select id="plan" onchange="updatePrice()"></select>
-
-<div class="price">
-<span>Total Price</span>
-<span id="price">GH₵4.40</span>
-</div>
-
-<button class="buy" onclick="order()">Continue to Order</button>
-<p class="note">Prices shown are starter prices. Payment and delivery will be activated after backend and payment integration are configured.</p>
-</section>
-
-<section class="panel">
-<h2>Why Choose Us?</h2>
-<p>✓ Affordable prices</p><br>
-<p>✓ Simple ordering process</p><br>
-<p>✓ MTN, Telecel and AT</p><br>
-<p>✓ Customer support</p>
-</section>
+<header><div class="wrap">
+  <h1>President's Data Bundles Ghana</h1>
+  <p>Choose your bundle. Pay securely with Paystack Mobile Money.</p>
+</div></header>
+<main class="wrap">
+  <div class="notice"><strong>Manual delivery:</strong> data bundles are sent after payment is verified. Please enter the recipient's phone number carefully.</div>
+  <div id="banner" class="status" role="status"></div>
+  <h2>Available bundles</h2>
+  <p class="muted">Prices are examples. The owner must update the server-side prices before accepting real orders.</p>
+  <section id="bundles" class="grid" aria-live="polite"><p>Loading bundles…</p></section>
+  <section class="panel" id="orderPanel">
+    <h2>Place your order</h2>
+    <p class="muted">Select a bundle above, then complete your details.</p>
+    <form id="orderForm">
+      <label for="bundle">Bundle</label>
+      <select id="bundle" name="bundleId" required><option value="">Loading…</option></select>
+      <div class="formgrid">
+        <div><label for="customerName">Your name</label><input id="customerName" name="customerName" autocomplete="name" required maxlength="100"></div>
+        <div><label for="email">Email address (required by Paystack)</label><input id="email" name="email" type="email" autocomplete="email" required maxlength="254"></div>
+        <div><label for="phone">Recipient phone number</label><input id="phone" name="phone" type="tel" autocomplete="tel" required maxlength="30" placeholder="e.g. 0551234567"></div>
+      </div>
+      <p class="muted">By placing the order, you agree that your details will be used to process payment and deliver the bundle.</p>
+      <button id="payButton" type="submit">Continue to Paystack Mobile Money</button>
+    </form>
+    <div id="message" class="status" role="status"></div>
+  </section>
+  <footer>Keep your payment reference until your order is completed. Never share your Mobile Money PIN or Paystack OTP with anyone.</footer>
 </main>
-
-<footer>
-<p>© 2026 President's Data Bundles Ghana</p>
-<p>Affordable Data. Reliable Service.</p>
-</footer>
-
 <script>
-let selectedNetwork="MTN";
-let prices={
- MTN:{data:{"1 GB":4.40,"2 GB":8.80,"3 GB":13.20,"5 GB":22,"10 GB":44},airtime:[5,10,20,50,100]},
- Telecel:{data:{"1 GB":6,"2 GB":12,"3 GB":18,"5 GB":30,"10 GB":60},airtime:[5,10,20,50,100]},
- AT:{data:{"1 GB":5,"2 GB":10,"3 GB":15,"5 GB":25,"10 GB":50},airtime:[5,10,20,50,100]}
-};
-function network(n,btn){
- selectedNetwork=n;
- document.querySelectorAll('.network').forEach(b=>b.classList.remove('active'));
- btn.classList.add('active');
- updateOptions();
+const money = amount => new Intl.NumberFormat("en-GH",{style:"currency",currency:"GHS"}).format(Number(amount));
+const bundleSelect = document.querySelector("#bundle");
+const bundleGrid = document.querySelector("#bundles");
+const message = document.querySelector("#message");
+let bundles = [];
+
+function showMessage(text) {
+  message.textContent = text;
+  message.style.display = "block";
 }
-function updateOptions(){
- let service=document.getElementById('service').value;
- let plan=document.getElementById('plan');
- plan.innerHTML='';
- let items=service==='data'?prices[selectedNetwork].data:Object.fromEntries(prices[selectedNetwork].airtime.map(v=>[ 'GH₵'+v,v]));
- Object.keys(items).forEach(k=>{
- let option=document.createElement('option');
- option.value=k;
- option.textContent=service==='data'?k:k+' Airtime';
- plan.appendChild(option);
- });
- updatePrice();
+async function loadBundles() {
+  try {
+    const response = await fetch("/api/bundles");
+    if (!response.ok) throw new Error();
+    bundles = await response.json();
+    bundleSelect.innerHTML = '<option value="">Choose a bundle</option>';
+    bundleGrid.innerHTML = "";
+    for (const b of bundles) {
+      const option = document.createElement("option");
+      option.value = b.id;
+      option.textContent = `${b.network} — ${b.size} — ${money(b.price)}`;
+      bundleSelect.append(option);
+      const card = document.createElement("article");
+      card.className = "card";
+      const network = document.createElement("div");
+      network.className = "network";
+      network.textContent = b.network;
+      const title = document.createElement("h3");
+      title.textContent = b.name;
+      const price = document.createElement("div");
+      price.className = "price";
+      price.textContent = money(b.price);
+      const button = document.createElement("button");
+      button.type = "button";
+      button.textContent = "Select bundle";
+      button.addEventListener("click", () => {
+        bundleSelect.value = b.id;
+        document.querySelector("#orderPanel").scrollIntoView({behavior:"smooth"});
+      });
+      card.append(network,title,price,button);
+      bundleGrid.append(card);
+    }
+  } catch {
+    bundleGrid.textContent = "Bundles are temporarily unavailable. Please try again later.";
+  }
 }
-function updatePrice(){
- let service=document.getElementById('service').value;
- let choice=document.getElementById('plan').value;
- let amount=service==='data'?prices[selectedNetwork].data[choice]:prices[selectedNetwork].airtime[Number(choice.replace('GH₵',''))/1] ;
- if(service==='airtime') amount=Number(choice.replace('GH₵',''));
- document.getElementById('price').textContent='GH₵'+Number(amount).toFixed(2);
+document.querySelector("#orderForm").addEventListener("submit", async event => {
+  event.preventDefault();
+  const button = document.querySelector("#payButton");
+  button.disabled = true;
+  button.textContent = "Preparing secure payment…";
+  message.style.display = "none";
+  const data = Object.fromEntries(new FormData(event.currentTarget).entries());
+  try {
+    const response = await fetch("/api/orders", {
+      method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(data)
+    });
+    const result = await response.json();
+    if (!response.ok) throw new Error(result.error || "Could not start payment.");
+    // The server returns the Paystack-hosted checkout URL; no secret key is in this page.
+    window.location.assign(result.authorizationUrl);
+  } catch (error) {
+    showMessage(error.message || "Something went wrong. Please try again.");
+    button.disabled = false;
+    button.textContent = "Continue to Paystack Mobile Money";
+  }
+});
+const params = new URLSearchParams(window.location.search);
+const payment = params.get("payment");
+if (payment) {
+  const banner = document.querySelector("#banner");
+  banner.style.display = "block";
+  banner.textContent = payment === "received"
+    ? "Paystack reports the payment as verified. Your order is awaiting manual data delivery."
+    : payment === "pending"
+      ? "Payment is not yet confirmed. Please wait a moment and contact the seller with your reference if needed."
+      : "We could not confirm the payment from this return. Please contact the seller before trying again.";
+  history.replaceState({}, "", "/");
 }
-function order(){
- let phone=document.getElementById('phone').value.trim();
- if(!/^0\d{9}$/.test(phone)){
- alert('Please enter a valid 10-digit Ghana phone number.');
- return;
- }
- let service=document.getElementById('service').value;
- let plan=document.getElementById('plan').value;
- let amount=document.getElementById('price').textContent;
- alert('Order summary\\nNetwork: '+selectedNetwork+'\\nService: '+service+'\\nPackage: '+plan+'\\nPhone: '+phone+'\\nPrice: '+amount+'\\n\\nCheckout will be enabled after payment integration.');
-}
-updateOptions();
+loadBundles();
 </script>
 </body>
 </html>

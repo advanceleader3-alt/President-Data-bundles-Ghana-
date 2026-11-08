@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Owner order desk</title>
+<style>
+body{font:16px system-ui,sans-serif;background:#f5f8f5;color:#17251c;margin:0}.wrap{max-width:1100px;margin:auto;padding:20px}
+.panel{background:white;border:1px solid #dce7df;border-radius:12px;padding:18px;margin:16px 0}
+input{padding:11px;border:1px solid #aab9ae;border-radius:8px;width:min(100%,460px);display:block;margin:8px 0}
+button{padding:10px 13px;border:0;border-radius:8px;background:#087443;color:white;font-weight:700;cursor:pointer}
+table{width:100%;border-collapse:collapse;background:white}th,td{text-align:left;padding:10px;border-bottom:1px solid #e1e9e3;vertical-align:top}th{background:#edf5ef}
+.tablewrap{overflow:auto}.muted{color:#526257}.bad{color:#9a311f}
+</style>
+</head>
+<body><main class="wrap">
+<h1>Owner order desk</h1>
+<p class="muted">Private operational page. Use HTTPS on your deployed site. Do not share your admin token.</p>
+<section class="panel">
+<label for="token">Admin token</label><input id="token" type="password" autocomplete="current-password" placeholder="Enter ADMIN_TOKEN">
+<button id="load">Load orders</button> <button id="forget" type="button">Forget token</button>
+<p id="status" role="status"></p>
+</section>
+<div class="tablewrap"><table><thead><tr><th>Order</th><th>Customer</th><th>Bundle</th><th>Payment</th><th>Delivery</th></tr></thead><tbody id="orders"><tr><td colspan="5">Enter your token and load orders.</td></tr></tbody></table></div>
+</main>
+<script>
+const tokenInput=document.querySelector("#token"), statusEl=document.querySelector("#status"), body=document.querySelector("#orders");
+document.querySelector("#forget").onclick=()=>{tokenInput.value="";body.innerHTML="";statusEl.textContent="Token cleared from this page.";};
+async function request(url, options={}) {
+  const headers={...(options.headers||{}),"x-admin-token":tokenInput.value};
+  const response=await fetch(url,{...options,headers});
+  const data=await response.json().catch(()=>({}));
+  if(!response.ok) throw new Error(data.error||"Request failed");
+  return data;
+}
+function td(text){const el=document.createElement("td");el.textContent=text??"";return el;}
+function render(orders){
+  body.innerHTML="";
+  if(!orders.length){body.innerHTML='<tr><td colspan="5">No orders yet.</td></tr>';return;}
+  for(const o of orders){
+    const tr=document.createElement("tr");
+    tr.append(td(`${o.reference}\n${new Date(o.created_at).toLocaleString()}`));
+    tr.append(td(`${o.customer_name}\n${o.phone}\n${o.email}`));
+    tr.append(td(`${o.bundle_name}\n${o.network}\nGHS ${o.amount}`));
+    tr.append(td(o.payment_status));
+    const delivery=td(o.fulfilment_status);
+    if(o.payment_status==="paid" && o.fulfilment_status!=="fulfilled"){
+      const btn=document.createElement("button");btn.textContent="Mark delivered";
+      btn.onclick=async()=>{
+        if(!confirm("Confirm you have sent this data bundle to the customer?"))return;
+        btn.disabled=true;
+        try{await request(`/api/admin/orders/${encodeURIComponent(o.reference)}/fulfil`,{method:"POST"});await loadOrders();}
+        catch(e){statusEl.textContent=e.message;btn.disabled=false;}
+      };
+      delivery.append(document.createElement("br"),btn);
+    }
+    tr.append(delivery);body.append(tr);
+  }
+}
+async function loadOrders(){
+  statusEl.textContent="Loading…";
+  try{const data=await request("/api/admin/orders");render(data);statusEl.textContent=`Loaded ${data.length} recent orders.`;}
+  catch(e){statusEl.textContent=e.message;statusEl.className="bad";}
+}
+document.querySelector("#load").onclick=loadOrders;
+</script></body></html>
